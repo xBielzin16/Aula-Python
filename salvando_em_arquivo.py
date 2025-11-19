@@ -4,27 +4,47 @@ from dataclasses import dataclass
 os.system("cls")
 
 @dataclass
-class Aluno:
-    nome: str
+class Paciente:
+    nome:str
     idade: int
+    peso: float
+    altura: float
+    cpf: int
+    
+def exibir_resultados(self):
+    print(f"Nome: {self.nome} \nIdade: {self.idade} \nPeso: {self.peso} \nAltura: {self.altura} \nCPF: {self.cpf}")
+    
+lista_de_pacientes = []
+QUANTIDADE_DE_PACIENTES = 2
 
-QUANTIDADE_ALUNOS = 2
-lista_alunos = []
-
-print("Solicitando dados do aluno.")
-for i in range(QUANTIDADE_ALUNOS):
-    aluno = Aluno(
+for i in range (QUANTIDADE_DE_PACIENTES):
+    paciente = Paciente(
         nome= input("Digite seu nome: "),
-        idade=int(input("Digite sua idade: "))
+        idade= int(input("Digite sua idade: ")),
+        peso= float(input("Digite seu peso: ")),
+        altura= float(input("Digite sua altura: ")),
+        cpf= int(input("Digite seu CPF: "))
     )
-    lista_alunos.append(aluno)
+    lista_de_pacientes.append(paciente)
+    print() # Pular uma linha.
+    
+nome_do_arquivo = "dados_pacientes.csv"
+with open(nome_do_arquivo, "a") as arquivo_pacientes:
+    for paciente in lista_de_pacientes:
+        arquivo_pacientes.write(f"{paciente.nome}, {paciente.idade} {paciente.peso} {paciente.altura} {paciente.cpf}")
+        print("Dados salvos com sucesso.")
+        
+# print("\nExibindo lista de pacientes:")
+# for paciente in lista_de_pacientes:
+#    paciente.exibir_dados()
 
-
-print()
-print("Exibindo dados.")
-arquivo = "dados_alunos.txt"
-
-with open(arquivo, "w") as arquivo_alunos:
-    for aluno in lista_alunos:
-        arquivo_alunos.write(f"{aluno.nome},{aluno.idade}\n")
-    print("Salvo com sucesso!")
+print("\nExibindo todos os pacientes: ")
+try:
+    # "r" - read - leitura
+    with open(nome_do_arquivo, "r") as arquivo:
+        # Recebe todos os dados do arquivo de uma só vez.
+        lista_de_pacientes = arquivo.readlines()
+        for paciente in lista_de_pacientes:
+            print(f"- {paciente.strip()}")
+except FileNotFoundError:
+    print("O arquivo não foi encontrado.")
